@@ -1,0 +1,33 @@
+#contain{
+    background-color: rgb(198, 51, 51);
+    height: 3rem;
+    /* display: flex; */
+    
+}
+ul {
+    list-style-type: none;
+}
+li a{
+    text-decoration: none;
+    color: white;
+    margin-top: 3%;
+
+
+}
+#Tomi:hover  {
+    background-color: green;
+
+}
+/* Home Section */
+.director{
+    /* border-top: 2px solid  rgb(196, 188, 188);
+    border-left: 2px solid  rgb(196, 188, 188);
+    border-right: 2px solid  rgb(196, 188, 188);
+    border-bottom: 2px solid rgb(196, 188, 188); */
+    margin-top: 5%;
+    margin-left: 9%;
+    padding: none;
+}
+.cast {
+    list-style-type:circle;
+}

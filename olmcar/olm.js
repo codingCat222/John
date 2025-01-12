@@ -1,0 +1,1 @@
+document.getElementById('demo').innerHTML='date.get(time)'
