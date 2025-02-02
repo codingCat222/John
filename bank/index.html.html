@@ -1,0 +1,1423 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jackson Smith - Banking App</title>
+    <!-- <link rel="stylesheet" href="ban.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff; 
+    color: #333; 
+    font-size: 14px;
+}
+
+.app-container {
+    max-width: 420px;
+    margin: 0 auto;
+    background-color: #ffffff; 
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+.top-actions {
+    background-color: #f0f0f0; 
+    padding: 8px;
+    color: #333;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    color: #666; 
+    font-weight: bold;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0.9;
+    transition: opacity 0.3s, color 0.3s;
+}
+
+.action-btn:active, .action-btn:hover {
+    color: #000;
+    opacity: 1;
+}
+
+.action-btn i {
+    margin-bottom: 3px;
+    font-size: 16px;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background-color: #ffffff; 
+}
+
+.account-overview {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.account-name {
+    margin: 0 0 5px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.account-details {
+    background-color: #2c3e50;  
+    padding: 10px;
+    border-radius: 6px;
+    color: white;  
+}
+
+.account-balance {
+    color: white;  
+    margin: 8px 0;
+    font-size: 22px;
+}
+
+.account-balance.blurred {
+    filter: blur(10px);
+    user-select: none;
+}
+
+.virtual-card {
+    background: linear-gradient(135deg, #34495e, #2c3e50); 
+    color: white;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+.virtual-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+.card-chip {
+    width: 40px;
+    height: 30px;
+    background: gold;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.card-number, .card-holder, .card-expiry, .card-cvv {
+    margin: 5px 0;
+    opacity: 0.9;
+}
+
+.transactions {
+    background-color: #f0f0f0; 
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.transaction {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #3e5166; 
+    font-size: 13px;
+    color: #333;
+}
+
+.transaction .amount.debit {
+    color: #f44336; 
+    font-weight: bold;
+}
+
+.transaction .amount.credit {
+    color: #4caf50; 
+    font-weight: bold;
+}
+
+.welcome-header {
+    background-color: #f0f0f0; 
+    padding: 12px 10px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+}
+
+.welcome-title {
+    margin: 0 0 5px 0;
+    color: #333;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1.2;
+}
+
+.welcome-subtitle {
+    margin: 0;
+    color: #a0a8b0; 
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.bottom-nav {
+    background-color: #f0f0f0; 
+    padding: 8px;
+    color: #333;
+}
+
+.nav-buttons {
+    display: flex;
+    justify-content: space-around;
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    color: #666; 
+    opacity: 0.7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+}
+
+.nav-btn i {
+    margin-bottom: 3px;
+    font-size: 16px;
+}
+
+.nav-btn.active {
+    opacity: 1;
+    color: #000;
+    font-weight: bold;
+}
+
+/* Modal Styles */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7); 
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #ffffff; 
+    color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+}
+
+/* Login Page Styles */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #ffffff; 
+}
+
+.login-content {
+    background-color: #ffffff; 
+    color: #333;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    width: 90%;
+    max-width: 400px;
+}
+
+.login-title {
+    text-align: center;
+    color: #4a90e2; 
+    margin-bottom: 20px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #3e5166;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.login-btn {
+    background-color: #4a90e2; 
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.login-btn:hover {
+    background-color: #357abd; 
+}
+
+.error-message {
+    color: #f44336; 
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* New Styles */
+.menu-list li {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #3e5166;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.menu-list li:hover {
+    background-color: #f0f0f0;
+}
+
+.menu-list li i {
+    margin-right: 15px;
+    color: #4a90e2;
+}
+
+.menu-list li span {
+    color: #666; 
+    font-size: 14px;
+    margin-left: auto;
+}
+
+.inbox-messages .message {
+    background-color: #f0f0f0;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: 1px solid #3e5166;
+}
+
+.inbox-messages .message.urgent {
+    background-color: #f0f0f0;
+    border: 2px solid #f44336; 
+}
+
+.inbox-messages .message h3 {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.inbox-messages .message p {
+    margin: 0 0 10px 0;
+    color: #666; 
+}
+
+.inbox-messages .message small {
+    color: #666;
+}
+
+.full-card-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card-design {
+    width: 100%;
+    max-width: 350px;
+    height: 220px;
+    background: linear-gradient(135deg, #34495e, #2c3e50); 
+    border-radius: 15px;
+    padding: 20px;
+    color: white;
+    position: relative;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    margin-bottom: 20px;
+}
+
+.card-issuer .visa-logo {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 60px;
+    filter: brightness(0) invert(1);
+}
+
+.card-chip-full {
+    width: 50px;
+    height: 40px;
+    background: goldenrod;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.card-number-full {
+    font-size: 20px;
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+}
+
+.card-holder-full {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.card-details-full {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-info {
+    width: 100%;
+    max-width: 350px;
+    background-color: #f0f0f0; 
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.card-info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #3e5166;
+}
+
+.card-info-row:last-child {
+    border-bottom: none;
+}
+
+.card-actions {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 350px;
+}
+
+.card-action-btn {
+    background-color: #4a90e2; 
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.card-action-btn:hover {
+    background-color: #357abd; 
+}
+
+.see-all-transactions {
+    width: 100%;
+    padding: 10px;
+    background-color: #f0f0f0;
+    color: #4a90e2;
+    border: 1px solid #3e5166;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.see-all-transactions:hover {
+    background-color: #ffffff;
+}
+
+.net-worth-chart {
+    background-color: #f0f0f0; 
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+}
+
+#netWorthChart {
+    max-height: 250px;
+}
+
+.balance-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-balance {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.8);
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.toggle-balance:hover {
+    color: white;
+}
+
+.transfer-receipt {
+    background-color: white;
+    border: 1px solid #3e5166;
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    max-width: 100%;
+}
+
+.receipt-header {
+    text-align: center;
+    border-bottom: 1px solid #3e5166;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.receipt-header h2 {
+    margin: 0;
+    color: #4a90e2;
+}
+
+.receipt-bank-info {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 12px;
+    color: #666;
+}
+
+.receipt-details {
+    margin-bottom: 15px;
+}
+
+.receipt-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.receipt-row:last-child {
+    border-bottom: none;
+}
+
+.receipt-footer {
+    text-align: center;
+    font-size: 12px;
+    color: #666;
+    border-top: 1px solid #3e5166;
+    padding-top: 10px;
+}
+
+.transfer-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.receipt-btn {
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.receipt-btn:hover {
+    background-color: #357abd;
+}
+    </style>
+
+</head>
+<body>
+
+    <div id="login-page" class="login-container">
+        <div class="login-content">
+            <h1 class="login-title">Welcome to Banking</h1>
+            <form id="login-form" class="login-form">
+                <div class="form-group">
+                    <label for="user-id">User ID</label>
+                    <input type="text" id="user-id" name="user-id" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <p id="login-error" class="error-message"></p>
+                <button type="submit" class="login-btn">Login</button>
+                <div style="text-align: center; margin-top: 20px;">
+                    <div style="margin-bottom: 10px;">- OR -</div>
+                    <button type="button" class="submit-btn" onclick="handleFaceID()" style="background: #333;">
+                        Login with Face ID
+                        <svg style="width: 20px; height: 20px; vertical-align: middle; margin-left: 8px;" viewBox="0 0 24 24" fill="white">
+                            <path d="M9 11.75c-.69 0-1.25.56-1.25 1.25s.56 1.25 1.25 1.25 1.25-.56 1.25-1.25-.56-1.25-1.25-1.25zm6 0c-.69 0-1.25.56-1.25 1.25s.56 1.25 1.25 1.25 1.25-.56 1.25-1.25-.56-1.25-1.25-1.25zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8 0-.29.02-.58.05-.86 2.36-1.05 4.23-2.98 5.21-5.37C11.07 8.33 14.05 10 17.42 10c.78 0 1.53-.09 2.25-.26.21.71.33 1.47.33 2.26 0 4.41-3.59 8-8 8z"/>
+                        </svg>
+                    </button>
+                </div>
+                
+
+                <!-- <input type="text" id="user-id" placeholder="Enter User ID" required /> -->
+                <!-- <input type="password" id="password" placeholder="Enter Password" required /> -->
+                <!-- <button type="submit">Login</button> -->
+                <!-- <p id="login-error" style="color: red;"></p> -->
+                <!-- <button type="button" id="create-account-btn">Create Account</button> -->
+            </form>
+        </div>
+    </div>
+
+    <div id="app-page" class="app-container" style="display: none;">
+        <header class="top-actions">
+            <div class="action-buttons">
+                <button class="action-btn" id="account-btn">
+                    <i class="fas fa-user"></i> Account
+                </button>
+                <button class="action-btn" id="bill-pay-btn">
+                    <i class="fas fa-file-invoice-dollar"></i> Bill Pay
+                </button>
+                <button class="action-btn" id="transfer-btn">
+                    <i class="fas fa-exchange-alt"></i> Transfer
+                </button>
+                <button class="action-btn" id="deposit-btn">
+                    <i class="fas fa-money-check-alt"></i> Deposit
+                </button>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="welcome-header">
+                <h2 class="welcome-title">Good Morning, Jackson</h2>
+                <p class="welcome-subtitle">Here's an overview of your finances today</p>
+            </div>
+
+            <div class="account-overview">
+                <h1 class="account-name">Jackson Smith</h1>
+                <div class="account-details">
+                    <p class="account-number">Acc: 50678170</p>
+                    <p class="account-type">Current Account</p>
+                    <div class="balance-container">
+                        <h2 class="account-balance" id="account-balance">$106,456.00</h2>
+                        <button class="toggle-balance" id="toggle-balance">
+                            <i class="fas fa-eye-slash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="net-worth-chart">
+                <h3>Net Worth</h3>
+                <canvas id="netWorthChart"></canvas>
+            </div>
+
+            <div class="virtual-card">
+                <div class="card-front">
+                    <div class="card-chip"></div>
+                    <div class="card-number">5067 8170 XXXX XXXX</div>
+                    <div class="card-holder">Jackson Smith</div>
+                    <div class="card-expiry">12/25</div>
+                    <div class="card-cvv">CVV: 123</div>
+                </div>
+            </div>
+
+            <div class="transactions">
+                <h3>Transaction History</h3>
+                <div class="transaction-list">
+                    <!-- Transactions will be dynamically added here -->
+                </div>
+            </div>
+
+            <!-- Modal Overlays -->
+            <div id="modal-overlay" class="modal-overlay">
+                <div class="modal-content">
+                    <span class="close-modal">&times;</span>
+                    <div id="modal-inner-content"></div>
+                </div>
+            </div>
+        </main>
+        smith@123
+
+        <footer class="bottom-nav">
+            <div class="nav-buttons">
+                <button class="nav-btn active" id="dashboard-btn">
+                    <i class="fas fa-chart-pie"></i> Dashboard
+                </button>
+                <button class="nav-btn" id="inbox-btn">
+                    <i class="fas fa-inbox"></i> Inbox
+                </button>
+                <button class="nav-btn" id="menu-btn">
+                    <i class="fas fa-bars"></i> Menu
+                </button>
+                <button class="nav-btn" id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </footer>
+    </div>
+    <!-- <script src="ban.js"></script> -->
+     <script>
+        // Transactions data
+const transactions = [
+    { date: 'Dec 15, 2023', description: 'Tesla Model S Purchase', amount: -85000.00 },
+    { date: 'Nov 22, 2023', description: 'Real Estate Investment', amount: 250000.00 },
+    { date: 'Oct 10, 2023', description: 'Stock Market Profit', amount: 45000.00 },
+    { date: 'Sep 5, 2023', description: 'Luxury Watch Purchase', amount: -22000.00 },
+    { date: 'Aug 18, 2023', description: 'High-End Laptop', amount: -3500.00 },
+    { date: 'Jul 30, 2023', description: 'Private Jet Charter', amount: -75000.00 },
+    { date: 'Jun 12, 2023', description: 'Crypto Investment', amount: 60000.00 },
+    { date: 'May 25, 2023', description: 'Yacht Maintenance', amount: -45000.00 },
+    { date: 'Apr 7, 2023', description: 'Art Collection', amount: -100000.00 },
+    { date: 'Mar 20, 2023', description: 'Stock Dividend', amount: 35000.00 },
+    { date: 'Feb 14, 2023', description: 'Fine Dining', amount: -2500.00 },
+    { date: 'Jan 30, 2023', description: 'Property Rental Income', amount: 18000.00 },
+    { date: 'Dec 22, 2022', description: 'Holiday Gifts', amount: -10000.00 },
+    { date: 'Nov 15, 2022', description: 'Business Consulting', amount: 75000.00 },
+    { date: 'Oct 5, 2022', description: 'Sports Car Upgrade', amount: -65000.00 },
+    // Additional historical transactions
+    { date: 'Sep 15, 2022', description: 'Charity Donation', amount: -50000.00 },
+    { date: 'Aug 22, 2022', description: 'Stock Purchase', amount: -30000.00 },
+    { date: 'Jul 10, 2022', description: 'Luxury Vacation', amount: -25000.00 },
+    { date: 'Jun 5, 2022', description: 'Real Estate Sale', amount: 500000.00 },
+    { date: 'May 18, 2022', description: 'High-End Electronics', amount: -15000.00 }
+];
+
+// Modal functionality
+function openModal(content) {
+    const modalOverlay = document.getElementById('modal-overlay');
+    const modalContent = document.getElementById('modal-inner-content');
+    modalContent.innerHTML = content;
+    modalOverlay.style.display = 'flex';
+}
+
+function closeModal() {
+    const modalOverlay = document.getElementById('modal-overlay');
+    modalOverlay.style.display = 'none';
+}
+
+// Add event listeners for top action buttons
+document.getElementById('account-btn').addEventListener('click', () => {
+    openModal('<h2>Account Details</h2><p>Account Number: 50678170</p><p>Current Balance: $106,456.00</p>');
+});
+
+document.getElementById('bill-pay-btn').addEventListener('click', () => {
+    openModal(`
+        <h2>Bill Pay</h2>
+        <div class="bill-pay-content">
+            <div class="form-group">
+                <label>Biller</label>
+                <select id="biller-select">
+                    <option>Electricity Bill</option>
+                    <option>Water Bill</option>
+                    <option>Internet Provider</option>
+                    <option>Phone Bill</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Amount</label>
+                <input type="number" id="bill-amount" placeholder="Enter bill amount">
+            </div>
+            <div class="form-group">
+                <label>Payment Date</label>
+                <input type="date" id="bill-date">
+            </div>
+            <button onclick="processBillPayment()" class="login-btn">Pay Bill</button>
+        </div>
+    `);
+    if ('bill pay') {
+        document.getElementById('bill-pay-btn').style.display = 'none';
+        alert('Payment sucessful');
+      } 
+    //   else {
+    //     alert('Invalid credentials. Please try again.');
+    //   }
+    
+    
+    // Set default date to today
+    document.getElementById('bill-date').valueAsDate = new Date();
+});
+
+document.getElementById('transfer-btn').addEventListener('click', () => {
+    openModal(`
+        <h2>Transfer Funds</h2>
+        <div class="transfer-content">
+            <div class="form-group">
+                <label>From Account</label>
+                <select>
+                    <option>Current Account (Balance: $106,456.00)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>To Account</label>
+                <input type="text" placeholder="Enter Account Number">
+            </div>
+            <div class="form-group">
+                <label>Amount</label>
+                <input type="number" id="transfer-amount" placeholder="Enter transfer amount">
+            </div>
+            <div class="form-group">
+                <label>Transfer Purpose</label>
+                <select name="transfer-purpose">
+                    <option>Personal Transfer</option>
+                    <option>Business Payment</option>
+                    <option>Investment</option>
+                    <option>Rent/Mortgage</option>
+                    <option>Family Support</option>
+                    <option>Other</option>
+                </select>
+            </div>
+            <button onclick="processTransfer()" class="login-btn">Transfer Funds</button>
+        </div>
+    `);
+});
+
+document.getElementById('deposit-btn').addEventListener('click', () => {
+    openModal(`
+        <h2>Deposit Funds</h2>
+        <div class="deposit-content">
+            <div class="form-group">
+                <label>Deposit Method</label>
+                <select id="deposit-method">
+                    <option>Bank Transfer</option>
+                    <option>Mobile Check Deposit</option>
+                    <option>Cash Deposit</option>
+                    <option>Wire Transfer</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Amount</label>
+                <input type="number" id="deposit-amount" placeholder="Enter deposit amount">
+            </div>
+            <div id="check-upload" style="display:none;">
+                <label>Upload Check Image</label>
+                <input type="file" accept="image/*">
+            </div>
+            <button onclick="processDeposit()" class="login-btn">Deposit</button>
+        </div>
+    `);
+
+    // Show/hide check upload based on deposit method
+    document.getElementById('deposit-method').addEventListener('change', (e) => {
+        const checkUpload = document.getElementById('check-upload');
+        checkUpload.style.display = e.target.value === 'Mobile Check Deposit' ? 'block' : 'none';
+    });
+});
+
+// Bottom nav button events
+document.getElementById('inbox-btn').addEventListener('click', () => {
+    openModal(`
+        <h2>Inbox</h2>
+        <div class="inbox-messages">
+            <div class="message urgent">
+                <h3>URGENT: Account Suspension</h3>
+                <p>Your account is temporarily suspended. You cannot make any transactions until you contact your bank!</p>
+                <small>Dec 29, 2023</small>
+            </div>
+            <div class="message urgent">
+                <h3>URGENT: Charge Notice</h3>
+                <p>You've been charged $5,000. Come to the bank with necessary documents and get your account resolved.</p>
+                <small>Jan 15, 2024</small>
+            </div>
+            <div class="message">
+                <h3>Account Statement</h3>
+                <p>Your monthly statement is ready for review.</p>
+                <small>Dec 28, 2023</small>
+            </div>
+            <div class="message">
+                <h3>Security Alert</h3>
+                <p>New device login detected on your account.</p>
+                <small>Dec 15, 2023</small>
+            </div>
+        </div>
+    `);
+});
+
+document.getElementById('menu-btn').addEventListener('click', () => {
+    openModal(`
+        <h2>Menu</h2>
+        <ul class="menu-list">
+            <li onclick="handleMenuAction('Account Settings')">
+                <i class="fas fa-cog"></i> Account Settings
+                <span>Manage your account preferences</span>
+            </li>
+            <li onclick="handleMenuAction('Manage Cards')">
+                <i class="fas fa-credit-card"></i> Manage Cards
+                <span>View and update your cards</span>
+            </li>
+            <li onclick="handleMenuAction('Security')">
+                <i class="fas fa-lock"></i> Security
+                <span>Enhance your account protection</span>
+            </li>
+            <li onclick="handleMenuAction('Help & Support')">
+                <i class="fas fa-question-circle"></i> Help & Support
+                <span>Get assistance from our team</span>
+            </li>
+            <li onclick="handleMenuAction('About')">
+                <i class="fas fa-info-circle"></i> About
+                <span>Learn more about our services</span>
+            </li>
+        </ul>
+    `);
+});
+
+document.getElementById('logout-btn').addEventListener('click', () => {
+    alert('Logged out successfully');
+    // In a real app, this would redirect to login page
+});
+
+// Close modal when clicking the close button or outside the modal
+document.querySelector('.close-modal').addEventListener('click', closeModal);
+document.getElementById('modal-overlay').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) {
+        closeModal();
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('login-form');
+    const loginPage = document.getElementById('login-page');
+    const appPage = document.getElementById('app-page');
+    const loginError = document.getElementById('login-error');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    // Check if user is already logged in
+    if (localStorage.getItem('loggedIn') === 'true') {
+        loginPage.style.display = 'none';
+        appPage.style.display = 'flex';
+    }
+
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const userId = document.getElementById('user-id').value;
+        const password = document.getElementById('password').value;
+
+        if (userId === 'Johnsam345' && password === 'Johnsam#09') {
+            localStorage.setItem('loggedIn', 'true');  // Store login status in localStorage
+            localStorage.setItem('userId', userId);    // Optionally store userId
+            loginPage.style.display = 'none';
+            appPage.style.display = 'flex';
+            loginError.textContent = '';
+        } else {
+            loginError.textContent = 'Invalid User ID or Password';
+        }
+    });
+//     loginForm.addEventListener('submit', (e) => {
+//     e.preventDefault();
+//     const userId = document.getElementById('user-id').value.trim();
+//     const password = document.getElementById('password').value.trim();
+
+//     console.log('User ID:', userId);
+//     console.log('Password:', password);
+
+//     if (userId === 'Jackson123' && password === 'Smith@123') {
+//         console.log('Login successful!');
+//         loginPage.style.display = 'none';
+//         appPage.style.display = 'flex';
+//         loginError.textContent = '';
+//     } else {
+//         console.log('Invalid credentials');
+//         loginError.textContent = 'Invalid User ID or Password';
+//     }
+// });
+
+
+
+
+loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const userId = document.getElementById('user-id').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    console.log('User ID:', userId);
+    console.log('Password:', password);
+
+    if (userId === 'Jackson123' && password === 'Smith@123') {
+        console.log('Login successful!');
+        loginPage.style.display = 'none';
+        appPage.style.display = 'flex';
+        loginError.textContent = '';
+    } else {
+        console.log('Invalid credentials');
+        loginError.textContent = 'Invalid User ID or Password';
+    }
+});
+
+
+
+    // Handle logout
+    logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('loggedIn');  // Remove login status
+        localStorage.removeItem('userId');    // Optionally remove userId
+        loginPage.style.display = 'flex';
+        appPage.style.display = 'none';
+    });
+});
+
+
+    const balanceElement = document.getElementById('account-balance');
+    const toggleBalanceButton = document.getElementById('toggle-balance');
+    let isBalanceVisible = true;
+
+    toggleBalanceButton.addEventListener('click', () => {
+        isBalanceVisible = !isBalanceVisible;
+        
+        if (isBalanceVisible) {
+            balanceElement.classList.remove('blurred');
+            toggleBalanceButton.innerHTML = '<i class="fas fa-eye-slash"></i>';
+        } else {
+            balanceElement.classList.add('blurred');
+            toggleBalanceButton.innerHTML = '<i class="fas fa-eye"></i>';
+        }
+    });
+
+    const ctx = document.getElementById('netWorthChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Jan 2022', 'Apr 2022', 'Jul 2022', 'Oct 2022', 'Jan 2023', 'Apr 2023', 'Jul 2023', 'Oct 2023'],
+            datasets: [{
+                label: 'Net Worth',
+                data: [50000, 65000, 80000, 95000, 110000, 125000, 140000, 156000],
+                borderColor: '#d32f2f',
+                backgroundColor: (context) => {
+                    const gradient = context.chart.ctx.createLinearGradient(0, 0, 0, 300);
+                    gradient.addColorStop(0, 'rgba(211, 47, 47, 0.3)');
+                    gradient.addColorStop(1, 'rgba(211, 47, 47, 0)');
+                    return gradient;
+                },
+                borderWidth: 3,
+                pointBackgroundColor: '#d32f2f',
+                pointBorderColor: 'white',
+                pointHoverRadius: 8,
+                pointHoverBackgroundColor: '#b71c1c',
+                tension: 0.4, // Increased curvature
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: '#d32f2f',
+                    titleColor: 'white',
+                    bodyColor: 'white',
+                    cornerRadius: 5,
+                    padding: 10
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.05)',
+                        borderDash: [5, 5]
+                    },
+                    ticks: {
+                        callback: function(value) {
+                            return '$' + value.toLocaleString();
+                        },
+                        color: '#666'
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        color: '#666'
+                    }
+                }
+            },
+            animation: {
+                duration: 2000,
+                easing: 'easeOutQuart'
+            }
+        }
+    });
+
+    const transactionList = document.querySelector('.transaction-list');
+    const seeAllButton = document.createElement('button');
+    seeAllButton.textContent = 'See All Transactions';
+    seeAllButton.classList.add('see-all-transactions');
+    
+    let displayedTransactionsCount = 5; // Initially display 5 transactions
+
+    function renderTransactions(count = displayedTransactionsCount) {
+        // Clear existing transactions
+        transactionList.innerHTML = '';
+
+        // Render transactions up to the specified count
+        transactions.slice(0, count).forEach(transaction => {
+            const transactionElement = document.createElement('div');
+            transactionElement.classList.add('transaction');
+            transactionElement.innerHTML = `
+                <span class="date">${transaction.date}</span>
+                <span class="description">${transaction.description}</span>
+                <span class="amount ${transaction.amount > 0 ? 'credit' : 'debit'}">${transaction.amount > 0 ? '+' : ''}$${Math.abs(transaction.amount).toLocaleString()}</span>
+            `;
+            transactionList.appendChild(transactionElement);
+        });
+    }
+
+        // Add or remove 'See All' button based on remaining transactions
+        if (count < transactions.length) {
+            seeAllButton.textContent = `See All (${transactions.length - count} more)`;  // Corrected syntax with backticks
+            if (!transactionList.contains(seeAllButton)) {  // Check if the button is already in the list
+                transactionList.appendChild(seeAllButton);
+            }
+        } else {
+            seeAllButton.remove();
+        }
+        
+
+    // Initial render
+    renderTransactions();
+
+    // Event listener for 'See All' button
+    seeAllButton.addEventListener('click', () => {
+        // Increase displayed transactions
+        displayedTransactionsCount += 10;
+        renderTransactions(displayedTransactionsCount);
+    });
+
+    // Virtual Card Click Event
+    const virtualCard = document.querySelector('.virtual-card');
+    virtualCard.addEventListener('click', () => {
+        openModal(`
+            <h2>Virtual Card Details</h2>
+            <div class="full-card-details">
+                <div class="card-design">
+                    <div class="card-issuer">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Visa_Logo.png/640px-Visa_Logo.png" alt="Visa Logo" class="visa-logo">
+                    </div>
+                    <div class="card-chip-full"></div>
+                    <div class="card-number-full">5067 8170 4321 9876</div>
+                    <div class="card-holder-full">Jackson Smith</div>
+                    <div class="card-details-full">
+                        <div class="card-expiry-full">12/25</div>
+                        <div class="card-cvv-full">123</div>
+                    </div>
+                </div>
+                <div class="card-info">
+                    <div class="card-info-row">
+                        <span>Card Type:</span>
+                        <span>Visa Platinum</span>
+                    </div>
+                    <div class="card-info-row">
+                        <span>Status:</span>
+                        <span>Active</span>
+                    </div>
+                    <div class="card-info-row">
+                        <span>Issued:</span>
+                        <span>Jan 15, 2023</span>
+                    </div>
+                    <div class="card-info-row">
+                        <span>Daily Limit:</span>
+                        <span>$50,000</span>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <button class="card-action-btn">Freeze Card</button>
+                    <button class="card-action-btn">Change PIN</button>
+                </div>
+            </div>
+        `);
+    });
+
+    function calculateDailyBalance() {
+        // Base balance set to $282,456
+        const baseBalance = 282456.00;
+        
+        // Calculate days since a reference date
+        const referenceDate = new Date('2024-01-15'); // Set a reference start date
+        const today = new Date();
+        
+        // Calculate days difference
+        const daysDifference = Math.floor((today - referenceDate) / (1000 * 60 * 60 * 24));
+        
+        // Calculate new balance (increase by 1000 per day)
+        const newBalance = baseBalance + (daysDifference * 1000);
+        
+        // Update balance display
+        const balanceElement = document.getElementById('account-balance');
+        balanceElement.textContent = `$${newBalance.toLocaleString()}.00`;
+
+
+        return newBalance;
+    }
+
+    // Call on page load and update balance
+    const currentBalance = calculateDailyBalance();
+
+    // Optional: Update balance every hour to ensure it's current
+    setInterval(calculateDailyBalance, 3600000); // 1 hour = 3,600,000 milliseconds
+
+    window.processTransfer = function() {
+        const amount = document.getElementById('transfer-amount').value;
+        const purpose = document.querySelector('select[name="transfer-purpose"]').value;
+        const currentBalance = calculateDailyBalance();
+        
+        if (amount && parseFloat(amount) > 0) {
+            if (parseFloat(amount) > currentBalance) {
+                alert('Insufficient funds');
+                return;
+            }
+            
+            // Generate receipt
+            const receiptContent = generateTransferReceipt(parseFloat(amount), purpose);
+            
+            // Open modal with receipt
+            openModal(`
+                <h2>Transfer Confirmation</h2>
+                ${receiptContent}
+                <div class="transfer-actions">
+                    <button onclick="downloadReceipt()" class="receipt-btn">Download Receipt</button>
+                    <button onclick="closeModal()" class="receipt-btn">Close</button>
+                </div>
+            `);
+        } else {
+            alert('Please enter a valid transfer amount');
+        }
+    }
+
+    function generateTransferReceipt(amount, purpose) {
+        const transferDate = new Date();
+        const formattedDate = transferDate.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    
+        // Generate a unique transaction ID
+        const transactionId = Math.floor(Math.random() * 1000000000);
+    
+        // Create the receipt object
+        const receipt = {
+            transactionId: transactionId,
+            amount: amount,
+            purpose: purpose,
+            date: formattedDate
+        };
+    
+        // Return the receipt or log it for now
+        return receipt;
+    }
+    
+    // Example usage:
+    const receipt = generateTransferReceipt(1000, 'Payment for services');
+    console.log(receipt);
+    
+        // Generate a random transaction ID
+        const transactionId = Math.floor(Math.random() * 1000000000);
+
+
+        // Predefined bank and recipient details for realism
+        const bankDetails = [
+            {
+                name: "Global Wealth Bank",
+                address: "123 Financial District, New York, NY 10001",
+                phone: "(800) 555-BANK"
+            }
+        ];
+    
+
+        // const recipientDetails = [
+        const recipientDetails=[
+            {
+                name: "Alex Johnson",
+                accountNumber: "**6789",
+                bankName: "Horizon Credit Union"
+            },
+            {
+                name: "Emily Rodriguez",
+                accountNumber: "**4321",
+                bankName: "Apex Financial Services"
+            },
+        ] 
+        // create account code 
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('login-form');
+            const loginPage = document.getElementById('login-page');
+            const appPage = document.getElementById('app-page');
+            const loginError = document.getElementById('login-error');
+            const createAccountPage = document.getElementById('create-account-page');
+            const createAccountForm = document.getElementById('create-account-form');
+            const createError = document.getElementById('create-error');
+            const logoutBtn = document.getElementById('logout-btn');
+            const backToLoginBtn = document.getElementById('back-to-login-btn');
+            const createAccountBtn = document.getElementById('create-account-btn');
+        
+            // Check if the user is already logged in
+            if (localStorage.getItem('loggedIn') === 'true') {
+                loginPage.style.display = 'none';
+                appPage.style.display = 'flex';
+            }
+        
+            // Handle login form submission
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const userId = document.getElementById('user-id').value.trim();
+                const password = document.getElementById('password').value.trim();
+        
+                // Check if credentials are correct
+                if (localStorage.getItem(userId) === password) {
+                    localStorage.setItem('loggedIn', 'true');
+                    loginPage.style.display = 'none';
+                    appPage.style.display = 'flex';
+                    loginError.textContent = '';
+                } else {
+                    loginError.textContent = 'Invalid User ID or Password';
+                }
+            });
+        
+            // Handle account creation page
+            createAccountBtn.addEventListener('click', () => {
+                loginPage.style.display = 'none';
+                createAccountPage.style.display = 'block';
+            });
+        
+            backToLoginBtn.addEventListener('click', () => {
+                createAccountPage.style.display = 'none';
+                loginPage.style.display = 'block';
+            });
+        
+            // Handle create account form submission
+            createAccountForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const newUserId = document.getElementById('new-user-id').value.trim();
+                const newPassword = document.getElementById('new-password').value.trim();
+        
+                // Check if the user ID already exists
+                if (localStorage.getItem(newUserId)) {
+                    createError.textContent = 'This User ID already exists. Please choose another one.';
+                } else {
+                    // Save new user credentials in localStorage
+                    localStorage.setItem(newUserId, newPassword);
+                    localStorage.setItem('loggedIn', 'true');
+                    loginPage.style.display = 'none';
+                    appPage.style.display = 'flex';
+                    createAccountPage.style.display = 'none';
+                    createError.textContent = '';
+                }
+            });
+        
+            // Handle logout
+            logoutBtn.addEventListener('click', () => {
+                localStorage.removeItem('loggedIn');
+                loginPage.style.display = 'flex';
+                appPage.style.display = 'none';
+            });
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('login-form');
+            const loginPage = document.getElementById('login-page');
+            const appPage = document.getElementById('app-page');
+            const loginError = document.getElementById('login-error');
+            const logoutBtn = document.getElementById('logout-btn');
+            const welcomeTitle = document.querySelector('.welcome-title');  
+        
+            // Function to get the appropriate greeting based on the time of day
+            function getGreeting() {
+                const currentHour = new Date().getHours();
+                
+                if (currentHour >= 5 && currentHour < 12) {
+                    return "Good Morning";
+                } else if (currentHour >= 12 && currentHour < 17) {
+                    return "Good Afternoon";
+                } else {
+                    return "Good Evening";
+                }
+            }
+        
+            // Check if the user is already logged in
+            if (localStorage.getItem('loggedIn') === 'true') {
+                loginPage.style.display = 'none';
+                appPage.style.display = 'flex';
+        
+                // Update the greeting based on the time of day
+                const userName = localStorage.getItem('userId');  // Assuming the user ID is saved in localStorage
+                welcomeTitle.textContent = `${getGreeting()}, ${userName}`;  // Set the personalized greeting
+            }
+        
+            // Handle login form submission
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const userId = document.getElementById('user-id').value.trim();
+                const password = document.getElementById('password').value.trim();
+        
+                // Check if credentials are correct
+                if (localStorage.getItem(userId) === password) {
+                    localStorage.setItem('loggedIn', 'true');
+                    localStorage.setItem('userId', userId);  // Store user ID
+                    loginPage.style.display = 'none';
+                    appPage.style.display = 'flex';
+        
+                    // Update the greeting based on the time of day
+                    welcomeTitle.textContent = `${getGreeting()}, ${userId}`;  // Set the personalized greeting
+                    loginError.textContent = '';
+                } else {
+                    loginError.textContent = 'Invalid User ID or Password';
+                }
+            });
+        
+            // Handle logout
+            logoutBtn.addEventListener('click', () => {
+                localStorage.removeItem('loggedIn');
+                localStorage.removeItem('userId');
+                loginPage.style.display = 'flex';
+                appPage.style.display = 'none';
+            });
+        });
+        
+                   
+     </script>
+</body>
+</html>
