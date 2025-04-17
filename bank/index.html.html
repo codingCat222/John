@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jackson Smith - Banking App</title>
-    <link rel="stylesheet" href="bank.css">
+    <!-- <link rel="stylesheet" href="bank.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -13,7 +13,7 @@
   padding: 0;
   background-color: #ffffff; 
   color: #333; 
-  font-size: 14px;z
+  font-size: 14px;
 }
 
 .app-container {
@@ -248,18 +248,7 @@
   height: 100vh;
   background-color: #ffffff; 
 }
-.dark-mode {
-  background-color: #121212;
-  color: #ffffff;
-}
 
-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
 .login-content {
   background-color: #ffffff; 
   color: #333;
@@ -582,6 +571,7 @@ button {
 .receipt-btn:hover {
   background-color: #357abd;
 }
+
     </style>
 </head>
 <body>
@@ -602,10 +592,8 @@ button {
             </form>
         </div>
     </div>
-    
-  <!-- <button onclick="toggleDarkMode()">Toggle Dark Mode</button> -->
 
-    <div id="app-page" class="app-container" style="display: block;">
+    <div id="app-page" class="app-container" style="display: none;">
         <header class="top-actions">
             <div class="action-buttons">
                 <button class="action-btn" id="account-btn">
@@ -632,7 +620,7 @@ button {
             <div class="account-overview">
                 <h1 class="account-name">Janet williams</h1>
                 <div class="account-details">
-                    <p class="account-number">Acc: 507822425</p>
+                    <p class="account-number">Acc: 50678170</p>
                     <p class="account-type">Current Account</p>
                     <div class="balance-container">
                         <h2 class="account-balance" id="account-balance">$106,456.00</h2>
@@ -651,7 +639,7 @@ button {
             <div class="virtual-card">
                 <div class="card-front">
                     <div class="card-chip"></div>
-                    <div class="card-number">5066 8147 XXXX XXXX</div>
+                    <div class="card-number">5067 8170 XXXX XXXX</div>
                     <div class="card-holder">Janet Williams</div>
                     <div class="card-expiry">12/25</div>
                     <div class="card-cvv">CVV: 123</div>
@@ -693,65 +681,31 @@ button {
     </div>
     <!-- <script type="module" src="bank.js"></script>
       -->
-    <!-- <script src="bank.js"></script> -->
-     <script>
+    <script>
         // Transactions data
 const transactions = [
-  { date: 'Dec 15, 2023', description: 'Tesla Model S Purchase', amount: -85000.00 },
-  { date: 'Nov 22, 2023', description: 'Real Estate Investment', amount: 250000.00 },
-  { date: 'Oct 10, 2023', description: 'Stock Market Profit', amount: 45000.00 },
-  { date: 'Sep 5, 2023', description: 'Luxury Watch Purchase', amount: -22000.00 },
-  { date: 'Aug 18, 2023', description: 'High-End Laptop', amount: -3500.00 },
-  { date: 'Jul 30, 2023', description: 'Private Jet Charter', amount: -75000.00 },
-  { date: 'Jun 12, 2023', description: 'Crypto Investment', amount: 60000.00 },
-  { date: 'May 25, 2023', description: 'Yacht Maintenance', amount: -45000.00 },
-  { date: 'Apr 7, 2023', description: 'Art Collection', amount: -100000.00 },
-  { date: 'Mar 20, 2023', description: 'Stock Dividend', amount: 35000.00 },
-  { date: 'Feb 14, 2023', description: 'Fine Dining', amount: -2500.00 },
-  { date: 'Jan 30, 2023', description: 'Property Rental Income', amount: 18000.00 },
-  { date: 'Dec 22, 2022', description: 'Holiday Gifts', amount: -10000.00 },
-  { date: 'Nov 15, 2022', description: 'Business Consulting', amount: 75000.00 },
-  { date: 'Oct 5, 2022', description: 'Sports Car Upgrade', amount: -65000.00 },
+  { date: 'Apr 14, 2025', description: 'Tesla Model S Purchase', amount: -85000.00 },
+  { date: 'Apr 8, 2025', description: 'Real Estate Investment', amount: 250000.00 },
+  { date: 'Apr 3, 2025', description: 'Stock Market Profit', amount: 45000.00 },
+  { date: 'Mar 27, 2025', description: 'Luxury Watch Purchase', amount: -22000.00 },
+  { date: 'march 24, 2025', description: 'High-End Laptop', amount: -3500.00 },
+  { date: 'march 3, 2025', description: 'Private Jet Charter', amount: -75000.00 },
+  { date: 'Feb 27, 2025', description: 'Crypto Investment', amount: 60000.00 },
+  { date: 'Feb 10, 2025', description: 'Yacht Maintenance', amount: -45000.00 },
+  { date: 'Feb 5, 2025', description: 'Art Collection', amount: -100000.00 },
+  { date: 'Jan 26, 2025', description: 'Stock Dividend', amount: 35000.00 },
+  { date: 'Jan 14, 2025', description: 'Fine Dining', amount: -2500.00 },
+  { date: 'Jan 3, 2025', description: 'Property Rental Income', amount: 18000.00 },
+  { date: 'Dec 22, 2024', description: 'Holiday Gifts', amount: -10000.00 },
+  { date: 'Nov 15, 2024', description: 'Business Consulting', amount: 75000.00 },
+  { date: 'Oct 5, 2024', description: 'Sports Car Upgrade', amount: -65000.00 },
   // Additional historical transactions
-  { date: 'Sep 15, 2022', description: 'Charity Donation', amount: -50000.00 },
-  { date: 'Aug 22, 2022', description: 'Stock Purchase', amount: -30000.00 },
-  { date: 'Jul 10, 2022', description: 'Luxury Vacation', amount: -25000.00 },
-  { date: 'Jun 5, 2022', description: 'Real Estate Sale', amount: 500000.00 },
-  { date: 'May 18, 2022', description: 'High-End Electronics', amount: -15000.00 }
+  { date: 'Sep 15, 2024', description: 'Charity Donation', amount: -50000.00 },
+  { date: 'Aug 22, 2024', description: 'Stock Purchase', amount: -30000.00 },
+  { date: 'Jul 10, 2024', description: 'Luxury Vacation', amount: -25000.00 },
+  { date: 'Jun 5, 2024', description: 'Real Estate Sale', amount: 500000.00 },
+  { date: 'May 18, 2024', description: 'High-End Electronics', amount: -15000.00 }
 ];
-// function toggleDarkMode() {
-//     document.body.classList.toggle('dark-mode');
-//   }
-let balance = localStorage.getItem('account-balance')
-? parseFloat(localStorage.getItem('account-balance'))
-: 1000;
-
-document.getElementById('account-balance').textContent = balance;
-
-function updateDisplay() {
-document.getElementById('account-balance').textContent = balance.toFixed(2);
-localStorage.setItem('account-balance', balance); // Save it
-}
-
-function deposit() {
-const amount = parseFloat(document.getElementById('amount').value);
-if (!isNaN(amount) && amount > 0) {
-  balance += amount;
-  updateDisplay();
-}
-}
-
-function withdraw() {
-const amount = parseFloat(document.getElementById('amount').value);
-if (!isNaN(amount) && amount > 0 && amount <= balance) {
-  balance -= amount;
-  updateDisplay();
-} else {
-  alert("Invalid amount or insufficient funds");
-}
-}
-
-
 
 // Modal functionality
 function openModal(content) {
@@ -1558,6 +1512,6 @@ window.processDeposit = function () {
 
 
 
-     </script>
+    </script>
 </body>
 </html>
