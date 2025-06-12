@@ -447,6 +447,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container">
+            <img src="c:\Users\User\Documents\study\demis.jpg" alt="" style="width: 5%; margin-right: 2%; border-radius: 50px; height: 10%; background-color: none;">
             <a class="navbar-brand" href="#">DEMIS MOVIES</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -590,7 +591,7 @@
                     </div>
                     <div class="carousel-item">
                         <div class="text-center">
-                            <h1 class="carousel-title">Now Playing</h1>
+              k              <h1 class="carousel-title">Now Playing</h1>
                             <p class="carousel-text">
                                 Check out what's currently trending in our cinema. The hottest movies right now.
                             </p>
@@ -1082,9 +1083,11 @@
                     <div class="social-icons mt-4">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href=""><i class="fab fa-instagram"></i></a>
                         <a href="#"><i class="fab fa-youtube"></i></a>
-                        <a href="#"><i class="fab fa-snapchat"></i></a>
+                        <a href="https://www.snapchat.com/t/WrkmD4NX"><i class="fab fa-snapchat"></i></a>
+                        <a href="https://wa.me/+234 816 684 6802"><i class="fab fa-whatsapp"></i></a>
+
 
                     </div>
                 </div>
@@ -1115,8 +1118,16 @@
                         <h5>Contact Info</h5>
                         <ul>
                             <!-- <li><i class="fas fa-map-marker-alt me-2"></i> 123 Movie Street, Lagos, Nigeria</li> -->
-                            <li><i class="fas fa-phone me-2"></i> +234 905 239 8815</li>
-                            <li><i class="fas fa-envelope me-2"></i> support@demismovies.com</li>
+                            <li>
+                                <a href="tel:+234 816 684 6802" target="_blank"> 
+                                <i class="fas fa-phone me-2"></i> +234 816 684 6802</li>
+                                </a>
+                            <li>
+                                <a href="mail to: kukusamoddemilade@gmail.com" target="_blank">
+                                <i class="fas fa-envelope me-2"></i> 
+                                kukusamoddemilade@gmail.com
+                            </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -1284,7 +1295,7 @@ function submitForm(form) {
     .then(data => {
         alert(data); // Show server response
         if (data.includes('Thank you')) {
-            form.reset();
+            form.kreset();
             // Close modal if this is a login/register form
             const modal = bootstrap.Modal.getInstance(form.closest('.modal'));
             if (modal) modal.hide();
@@ -1323,7 +1334,7 @@ function submitForm(form) {
     const handler = PaystackPop.setup({
       key: 'pk_test_4f41ccf75ef512dd77bdd190f9a5e0f145b0a3d6', // Public Key (NOT Secret Key)
       email: 'customer@example.com',
-      amount: 500000, // in kobo (₦5000)
+      amount: 80000, // in kobo (₦5000)
       currency: 'NGN',
       ref: 'tx_' + Math.floor(Math.random() * 1000000000), // Unique reference
       callback: function(response) {
@@ -1338,7 +1349,7 @@ function submitForm(form) {
       },
       onClose: function() {
         alert('Payment window closed.');
-      },
+      }
     });
     handler.openIframe();
   }
