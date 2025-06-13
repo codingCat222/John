@@ -24,6 +24,7 @@
             background: var(--dark-color);
             color: white;
             overflow-x: hidden;
+            user-select: none;
         }
         
         .navbar {
@@ -443,11 +444,11 @@
         
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container">
-            <img src="c:\Users\User\Documents\study\demis.jpg" alt="" style="width: 5%; margin-right: 2%; border-radius: 50px; height: 10%; background-color: none;">
+            <img src="c:\Users\User\Downloads\banjo.jpg" alt="" style="width: 5%; margin-right: 2%; border-radius: 50px; height: 10%; background-color: none;">
             <a class="navbar-brand" href="#">DEMIS MOVIES</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -1156,7 +1157,7 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="https:samueloluwatobi284@gmail.com" method="POST">
+                    <form action="https://formspree.io/f/xjkrwvkj" method="POST">
                     <!-- <form id="loginForm" action="https://formspree.io/f/tobisamuel2024@gmail.com" method="POST"> -->
                         <div class="mb-3">
                             <label for="loginEmail" class="form-label">Email address</label>
@@ -1272,7 +1273,10 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
     const password = document.getElementById('registerPassword').value;
     const confirmPassword = document.getElementById('registerConfirmPassword').value;
     
-    if (password !== confirmPassword) {
+    if (password !== confirmPassword){
+        window.location.href='demi.html'
+    }
+    else  {
         alert('Passwords do not match!');
         return;
     }
@@ -1360,8 +1364,22 @@ function submitForm(form) {
 // Initialize transaction
 Paystack.transaction.initialize({
   email: 'customer@example.com',
-  amount: 800, // in kobo (₦5000.00)
+  amount: 80000, // in kobo (₦5000.00)
 });
+// my f12
+document.onkeydown=
+function(e){
+    if(e.keyCode==="F12" ||
+    (e.ctrlKey && e.shiftKey && e.keyCode === 73)
+    )
+    (
+    e.ctrlKey && e.keyCode ===85
+    )
+    {
+        return false;
+    }
+};
+
     </script>
 </body>
 </html>
